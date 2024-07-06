@@ -4,7 +4,7 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import About from "../pages/About";
 import Conract from "../pages/Conract";
-import { adminPaths } from "./admin.routes";
+import { adminRoutes } from "./admin.routes";
 import AdminLayout from "../componets/layout/AdminLayout";
 
 const router = createBrowserRouter([
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <AdminLayout></AdminLayout>,
-    children: adminPaths,
+    children: adminRoutes,
   },
 ]);
 
