@@ -4,8 +4,9 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import About from "../pages/About";
 import Conract from "../pages/Conract";
-import { adminRoutes } from "./admin.routes";
-import AdminLayout from "../componets/layout/AdminLayout";
+import { adminPaths } from "./admin.routes";
+import routeGenarator from "../utils/routeGenarator";
+import { facultyPaths } from "./faculty.routes";
 
 const router = createBrowserRouter([
   {
@@ -20,8 +21,13 @@ const router = createBrowserRouter([
   { path: "/register", element: <Register></Register> },
   {
     path: "/admin",
-    element: <AdminLayout></AdminLayout>,
-    children: adminRoutes,
+    element: <App></App>,
+    children: routeGenarator(adminPaths),
+  },
+  {
+    path: "/faculty",
+    element: <App></App>,
+    children: routeGenarator(facultyPaths),
   },
 ]);
 
