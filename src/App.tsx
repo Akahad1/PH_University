@@ -1,9 +1,12 @@
 import MainLayout from "./componets/layout/MainLayout";
+import ProtectorRoute from "./componets/layout/ProtectorRoute";
 
 function App() {
   return (
     <>
-      <MainLayout></MainLayout>
+      <ProtectorRoute>
+        <MainLayout></MainLayout>
+      </ProtectorRoute>
     </>
   );
 }

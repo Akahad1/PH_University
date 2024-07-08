@@ -1,20 +1,34 @@
 import { Button } from "antd";
-import React from "react";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { useLogInMutation } from "../redux/Features/auth/authApi";
-import Password from "antd/es/input/Password";
+import { useAppDispatch } from "../redux/hook";
+import { setUser, TUser } from "../redux/Features/auth/AuthSlice";
+import { veryfiyToken } from "../utils/veryfiyToken";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
-  const [login, { data, error }] = useLogInMutation();
-  console.log("data", data);
-  const getLogInData = (data) => {
-    const userInfo = {
-      id: data.id,
-      password: data.password,
-    };
-    console.log(userInfo);
-    login(userInfo);
+  const [login] = useLogInMutation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const getLogInData = async (data: FieldValues) => {
+    const tostID = toast.loading("Login");
+    try {
+      const userInfo = {
+        id: data.id,
+        password: data.password,
+      };
+      console.log(userInfo);
+      const res = await login(userInfo).unwrap();
+      const user = veryfiyToken(res.data.accessToken) as TUser;
+      console.log(user);
+      dispatch(setUser({ user: user, token: res.data.accessToken }));
+      toast.success("Log In successFully", { id: tostID, duration: 2000 });
+      navigate(`/${user.role}/dashBoard`);
+    } catch (eror) {
+      toast.error("somthig is rong", { id: tostID, duration: 2000 });
+    }
   };
   return (
     <form onSubmit={handleSubmit(getLogInData)}>
