@@ -2,6 +2,8 @@ import { Layout, Menu } from "antd";
 import sidebarItemGenarator from "../../utils/sidebarItemGenarator";
 import { adminPaths } from "../../router/admin.routes";
 import { facultyPaths } from "../../router/faculty.routes";
+import { useAppSelector } from "../../redux/hook";
+import { useCurrentUser } from "../../redux/Features/auth/AuthSlice";
 const { Sider } = Layout;
 
 const Sidebar = () => {
@@ -11,9 +13,9 @@ const Sidebar = () => {
     FACULTY: "faculty",
     STUDENT: "student",
   };
-  const role = "admin";
+  const user = useAppSelector(useCurrentUser);
 
-  switch (role) {
+  switch (user!.role) {
     case userRole.ADMIN:
       sidebarItem = sidebarItemGenarator(adminPaths, userRole.ADMIN);
       break;
