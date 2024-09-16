@@ -1,3 +1,4 @@
+import { Form } from "antd";
 import { ReactNode } from "react";
 import {
   FieldValues,
@@ -7,14 +8,14 @@ import {
 } from "react-hook-form";
 
 type TProps = {
-  getLogInData: SubmitHandler<FieldValues>;
-  children: ReactNode;
+  onSubmit: SubmitHandler<FieldValues>;
+  children?: ReactNode;
 };
-const PHForm = ({ getLogInData, children }: TProps) => {
+const PHForm = ({ onSubmit, children }: TProps) => {
   const methods = useForm();
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(getLogInData)}>{children}</form>;
+      <Form onFinish={methods.handleSubmit(onSubmit)}> {children}</Form>;
     </FormProvider>
   );
 };

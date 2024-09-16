@@ -35,7 +35,7 @@ const Login = () => {
   };
   return (
     <Row justify="center" align="middle" style={{ height: "100vh" }}>
-      <PHForm getLogInData={getLogInData}>
+      <PHForm onSubmit={getLogInData}>
         <PHInput type="text" name="userId" label="ID"></PHInput>
 
         <PHInput type="text" name="password" label="Password"></PHInput>
