@@ -1,111 +1,118 @@
 import { Table, TableColumnsType, TableProps } from "antd";
 import { useGetAllSemsterQuery } from "../../../redux/Features/academicManagment/academicManagment.api";
-interface DataType {
-  key: React.Key;
-  name: string;
-  age: number;
-  address: string;
-}
+import { TAcademicSemster } from "../../../types/acdemicSemster.type";
+import { useState } from "react";
+import { TQureyParam } from "../../../types/gobal";
+type TTableData = Pick<
+  TAcademicSemster,
+  "endMonth" | "name" | "startMonth" | "year"
+>;
 const AcademicManagment = () => {
-  const { data: semsterData } = useGetAllSemsterQuery(undefined);
+  const [params, setParams] = useState<TQureyParam[] | undefined>(undefined);
+  const {
+    data: semsterData,
+    isLoading,
+    isFetching,
+  } = useGetAllSemsterQuery(params);
 
-  const columns: TableColumnsType<DataType> = [
+  console.log(semsterData);
+
+  const tableData = semsterData?.data?.map(
+    ({ _id, name, startMonth, endMonth, year }) => ({
+      key: _id,
+      name,
+      startMonth,
+      endMonth,
+      year,
+    })
+  );
+  const columns: TableColumnsType<TTableData> = [
     {
       title: "Name",
       dataIndex: "name",
+      key: "name",
       showSorterTooltip: { target: "full-header" },
       filters: [
         {
-          text: "Joe",
-          value: "Joe",
+          text: "Autumn",
+          value: "Autumn",
         },
         {
-          text: "Jim",
-          value: "Jim",
+          text: "Fall",
+          value: "Fall",
         },
         {
-          text: "Submenu",
-          value: "Submenu",
-          children: [
-            {
-              text: "Green",
-              value: "Green",
-            },
-            {
-              text: "Black",
-              value: "Black",
-            },
-          ],
+          text: "Summer",
+          value: "Summer",
         },
       ],
-      // specify the condition of filtering result
-      // here is that finding the name started with `value`
-      onFilter: (value, record) => record.name.indexOf(value as string) === 0,
-      sorter: (a, b) => a.name.length - b.name.length,
-      sortDirections: ["descend"],
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.age - b.age,
+      title: "Year",
+      dataIndex: "year",
+      key: "year",
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      filters: [
-        {
-          text: "London",
-          value: "London",
-        },
-        {
-          text: "New York",
-          value: "New York",
-        },
-      ],
-      onFilter: (value, record) =>
-        record.address.indexOf(value as string) === 0,
+      title: "Start Month",
+      dataIndex: "startMonth",
+      key: "startMonth",
+    },
+    {
+      title: "End Month",
+      dataIndex: "endMonth",
+      key: "endMonth",
     },
   ];
-  const data = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-    },
-    {
-      key: "4",
-      name: "Jim Red",
-      age: 32,
-      address: "London No. 2 Lake Park",
-    },
-  ];
+  // const data = [
+  //   {
+  //     key: "1",
+  //     name: "John Brown",
+  //     age: 32,
+  //     address: "New York No. 1 Lake Park",
+  //   },
+  //   {
+  //     key: "2",
+  //     name: "Jim Green",
+  //     age: 42,
+  //     address: "London No. 1 Lake Park",
+  //   },
+  //   {
+  //     key: "3",
+  //     name: "Joe Black",
+  //     age: 32,
+  //     address: "Sydney No. 1 Lake Park",
+  //   },
+  //   {
+  //     key: "4",
+  //     name: "Jim Red",
+  //     age: 32,
+  //     address: "London No. 2 Lake Park",
+  //   },
+  // ];
 
-  const onChange: TableProps<DataType>["onChange"] = (
+  const onChange: TableProps<TTableData>["onChange"] = (
     pagination,
     filters,
     sorter,
     extra
   ) => {
-    console.log("params", pagination, filters, sorter, extra);
+    if (extra.action === "filter") {
+      const queryParams: TQureyParam[] = [];
+
+      filters.name?.forEach((item) =>
+        queryParams.push({ name: "name", value: item })
+      );
+      setParams(queryParams);
+    }
   };
+  if (isLoading) {
+    return "Loading....";
+  }
   return (
     <Table
+      loading={isFetching}
       columns={columns}
-      dataSource={data}
+      dataSource={tableData}
       onChange={onChange}
       showSorterTooltip={{ target: "sorter-icon" }}
     />

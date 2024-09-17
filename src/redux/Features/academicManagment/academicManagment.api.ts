@@ -1,12 +1,30 @@
+import { TAcademicSemster } from "../../../types/acdemicSemster.type";
+import { TQureyParam, TResponsRedux } from "../../../types/gobal";
 import { baseApi } from "../../api/baseApi";
 
 const academicManagmentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllSemster: builder.query({
-      query: () => ({
-        url: "/academic-semesters",
-        method: "GET",
-      }),
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item: TQureyParam) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+
+        return {
+          url: "/academic-semesters",
+          method: "GET",
+          params: params,
+        };
+      },
+      transformResponse: (response: TResponsRedux<TAcademicSemster[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
     }),
     addAcademicSemster: builder.mutation({
       query: (data) => ({
