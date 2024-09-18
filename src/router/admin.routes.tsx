@@ -6,9 +6,9 @@ import CreateADepeartment from "../pages/admin/AcademicManagment/CreateADepeartm
 import CreateAfaculty from "../pages/admin/AcademicManagment/CreateAfaculty";
 import CreateASemster from "../pages/admin/AcademicManagment/CreateASemster";
 import AdminDashBoard from "../pages/admin/AdminDashBoard";
-import CreateAdmin from "../pages/admin/CreateAdmin";
-import CreateFaculty from "../pages/admin/CreateFaculty";
-import CreateStudent from "../pages/student/CreateStudent";
+import CreateAdmin from "../pages/admin/userManagment/CreateAdmin";
+import CreateFaculty from "../pages/admin/userManagment/CreateFaculty";
+import CreateStudent from "../pages/admin/userManagment/CreateStudent";
 
 export const adminPaths = [
   {

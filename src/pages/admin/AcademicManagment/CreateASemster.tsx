@@ -5,7 +5,7 @@ import PHSelect from "../../../componets/form/PHSelect";
 import { monthOptions } from "../../../constant/gobal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { academicSemesterSchma } from "../../../Schema/academicSemesterSchma";
-import { useAddAcademicSemsterMutation } from "../../../redux/Features/academicManagment/academicManagment.api";
+import { useAddAcademicSemsterMutation } from "../../../redux/Features/admin/academicManagment.api";
 import { toast } from "sonner";
 import { TResponse } from "../../../types/gobal";
 

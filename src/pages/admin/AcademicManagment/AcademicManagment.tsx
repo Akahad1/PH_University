@@ -1,5 +1,5 @@
 import { Table, TableColumnsType, TableProps } from "antd";
-import { useGetAllSemsterQuery } from "../../../redux/Features/academicManagment/academicManagment.api";
+import { useGetAllSemsterQuery } from "../../../redux/Features/admin/academicManagment.api";
 import { TAcademicSemster } from "../../../types/acdemicSemster.type";
 import { useState } from "react";
 import { TQureyParam } from "../../../types/gobal";
@@ -61,6 +61,18 @@ const AcademicManagment = () => {
       title: "End Month",
       dataIndex: "endMonth",
       key: "endMonth",
+    },
+    {
+      title: "Action",
+
+      key: "x",
+      render: () => {
+        return (
+          <div>
+            <button>Upadate</button>
+          </div>
+        );
+      },
     },
   ];
   // const data = [

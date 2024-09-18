@@ -1,3 +1,4 @@
+import { TAcademicDepartment } from "../../../types/academicManagment.types";
 import { TAcademicSemster } from "../../../types/acdemicSemster.type";
 import { TQureyParam, TResponsRedux } from "../../../types/gobal";
 import { baseApi } from "../../api/baseApi";
@@ -26,6 +27,18 @@ const academicManagmentApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getAcademicDepartments: builder.query({
+      query: () => {
+        return { url: "/academic-departments", method: "GET" };
+      },
+      transformResponse: (response: TResponsRedux<TAcademicDepartment[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
+
     addAcademicSemster: builder.mutation({
       query: (data) => ({
         url: "/academic-semesters/create-academic-semester",
@@ -36,5 +49,8 @@ const academicManagmentApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllSemsterQuery, useAddAcademicSemsterMutation } =
-  academicManagmentApi;
+export const {
+  useGetAllSemsterQuery,
+  useGetAcademicDepartmentsQuery,
+  useAddAcademicSemsterMutation,
+} = academicManagmentApi;
