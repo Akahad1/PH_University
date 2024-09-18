@@ -1,10 +1,10 @@
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import { Controller, FieldValues, SubmitHandler } from "react-hook-form";
 import { useAddStudentMutation } from "../../../redux/Features/admin/userManagment.api";
 import {
   useGetAcademicDepartmentsQuery,
   useGetAllSemsterQuery,
 } from "../../../redux/Features/admin/academicManagment.api";
-import { Button, Col, Divider, Row } from "antd";
+import { Button, Col, Divider, Form, Input, Row } from "antd";
 import PHForm from "../../../componets/form/PHForm";
 import PHInput from "../../../componets/form/PHInput";
 import PHSelect from "../../../componets/form/PHSelect";
@@ -63,9 +63,9 @@ const studentDefaultValues = {
   bloogGroup: "A+",
   email: "student345@gmail.com",
   contactNo: "1235678",
-  emergencyContactNo: "987-654-3210",
+  emargencyNo: "987-654-3210",
   presentAddress: "123 Main St, Cityville",
-  permanentAddress: "456 Oak St, Townsville",
+  permanetAddress: "456 Oak St, Townsville",
 
   guardian: {
     fatherName: "James Doe",
@@ -84,7 +84,8 @@ const studentDefaultValues = {
   },
 
   admissionSemester: "66615b678640f8009f9d6042",
-  academicDepartment: "66ea76be9e213bbb39801773",
+  admissionDepartment: "66ea76be9e213bbb39801773",
+  academicFaculty: "6665b2e76097338891075543",
 };
 
 const CreateStudent = () => {
@@ -117,7 +118,7 @@ const CreateStudent = () => {
     const formData = new FormData();
 
     formData.append("data", JSON.stringify(studentData));
-    // formData.append('file', data.image);
+    // formData.append("file", data.image);
 
     addStudent(formData);
 
@@ -154,7 +155,7 @@ const CreateStudent = () => {
                 label="Blood group"
               />
             </Col>
-            {/* <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <Controller
                 name="image"
                 render={({ field: { onChange, value, ...field } }) => (
@@ -168,7 +169,7 @@ const CreateStudent = () => {
                   </Form.Item>
                 )}
               />
-            </Col> */}
+            </Col>
           </Row>
           <Divider>Contact Info.</Divider>
           <Row gutter={8}>
@@ -181,7 +182,7 @@ const CreateStudent = () => {
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHInput
                 type="text"
-                name="emergencyContactNo"
+                name="emargencyNo"
                 label="Emergency Contact"
               />
             </Col>
@@ -195,7 +196,7 @@ const CreateStudent = () => {
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHInput
                 type="text"
-                name="permanentAddress"
+                name="permanetAddress"
                 label="Permanent Address"
               />
             </Col>
@@ -286,7 +287,7 @@ const CreateStudent = () => {
               <PHSelect
                 options={departmentOptions}
                 disabled={dIsLoading}
-                name="academicDepartment"
+                name="admissionDepartment"
                 label="Admission Department"
               />
             </Col>
