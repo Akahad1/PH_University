@@ -38,7 +38,7 @@ const CreateASemster = () => {
     console.log(semsterData);
 
     try {
-      const res = (await academicSemesterData(semsterData)) as TResponse;
+      const res = (await academicSemesterData(semsterData)) as TResponse<any>;
       if (res.error) {
         toast.error(res.error.data.message, { id: toastid });
       } else {
