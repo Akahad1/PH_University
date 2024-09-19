@@ -1,10 +1,36 @@
-import { Table, TableColumnsType, TableProps } from "antd";
+import { Dropdown, Table, TableColumnsType, TableProps } from "antd";
 
 import { TQureyParam } from "../../../types/gobal";
-import { useGetAllSemsterRegisterdQuery } from "../../../redux/Features/admin/CouresMangement.api";
+import {
+  useGetAllSemsterRegisterdQuery,
+  useUpadeteSemsterResterMutation,
+} from "../../../redux/Features/admin/CouresMangement.api";
 import { TSemester } from "../../../types/coursesManagemetnt.types";
-type TTableData = Pick<TSemester, "startDate" | "academicSemester" | "status">;
+import moment from "moment";
+import { useState } from "react";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+type TTableData = Pick<
+  TSemester,
+  "startDate" | "academicSemester" | "status" | "endDate"
+>;
+const items = [
+  {
+    label: "Upcoming",
+    key: "UPCOMING",
+  },
+  {
+    label: "Ongoing",
+    key: "ONGOING",
+  },
+  {
+    label: "Ended",
+    key: "ENDED",
+  },
+];
+
 const RegistradSemester = () => {
+  const [upadetSesterReisterd] = useUpadeteSemsterResterMutation();
+  const [semsesterid, setSemsterid] = useState("");
   const {
     data: ResgistersemsterData,
     isLoading,
@@ -14,14 +40,30 @@ const RegistradSemester = () => {
   console.log(ResgistersemsterData);
 
   const tableData = ResgistersemsterData?.data?.map(
-    ({ _id, status, academicSemester, startDate }) => ({
+    ({ _id, status, academicSemester, startDate, endDate }) => ({
       key: _id,
       name: `${academicSemester.name} ${academicSemester.year}`,
       status,
       academicSemester,
-      startDate,
+      startDate: moment(new Date(startDate)).format("MMMM"),
+      endDate: moment(new Date(endDate)).format("MMMM"),
     })
   );
+  const handleStatusUpdate: SubmitHandler<FieldValues> = (data) => {
+    console.log(data.key);
+    const updatedata = {
+      id: semsesterid,
+      data: {
+        status: data.key,
+      },
+    };
+    upadetSesterReisterd(updatedata);
+  };
+
+  const menuProps = {
+    items,
+    onClick: handleStatusUpdate,
+  };
   const columns: TableColumnsType<TTableData> = [
     {
       title: "academicSemester",
@@ -35,23 +77,25 @@ const RegistradSemester = () => {
       key: "status",
     },
     {
-      title: "Start Month",
-      dataIndex: "startMonth",
-      key: "startMonth",
+      title: "startDate",
+      dataIndex: "startDate",
+      key: "startDate",
     },
     {
-      title: "End Month",
-      dataIndex: "endMonth",
-      key: "endMonth",
+      title: "End Date",
+      dataIndex: "endDate",
+      key: "endDate",
     },
     {
       title: "Action",
 
       key: "x",
-      render: () => {
+      render: (item) => {
         return (
           <div>
-            <button>Upadate</button>
+            <Dropdown menu={menuProps}>
+              <button onClick={() => setSemsterid(item.key)}>Upadate</button>
+            </Dropdown>
           </div>
         );
       },

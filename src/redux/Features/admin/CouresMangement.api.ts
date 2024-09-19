@@ -28,6 +28,30 @@ const coursesManagmentApi = baseApi.injectEndpoints({
           meta: response.meta,
         };
       },
+      providesTags: ["semster"],
+    }),
+    getCourses: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item: TQureyParam) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+
+        return {
+          url: "/courses",
+          method: "GET",
+          params: params,
+        };
+      },
+      transformResponse: (response: TResponsRedux<any>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+      providesTags: ["courses"],
     }),
 
     addSemsterRester: builder.mutation({
@@ -36,9 +60,31 @@ const coursesManagmentApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["semster"],
+    }),
+    upadeteSemsterRester: builder.mutation({
+      query: (args) => ({
+        url: `/semester-registrations/${args.id}`,
+        method: "PATCH",
+        body: args.data,
+      }),
+      invalidatesTags: ["semster"],
+    }),
+    addCouress: builder.mutation({
+      query: (data) => ({
+        url: `/courses/create-course`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["courses"],
     }),
   }),
 });
 
-export const { useAddSemsterResterMutation, useGetAllSemsterRegisterdQuery } =
-  coursesManagmentApi;
+export const {
+  useAddSemsterResterMutation,
+  useGetAllSemsterRegisterdQuery,
+  useUpadeteSemsterResterMutation,
+  useAddCouressMutation,
+  useGetCoursesQuery,
+} = coursesManagmentApi;

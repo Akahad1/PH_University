@@ -15,20 +15,6 @@ import { toast } from "sonner";
 import { useAddSemsterResterMutation } from "../../../redux/Features/admin/CouresMangement.api";
 
 const SemesterRegister = () => {
-  //   const nameOption = [
-  //     {
-  //       value: "01",
-  //       label: "Autumn",
-  //     },
-  //     {
-  //       value: "02",
-  //       label: "Summer",
-  //     },
-  //     {
-  //       value: "03",
-  //       label: "Fall",
-  //     },
-  //   ];
   const [addSemsterResterd] = useAddSemsterResterMutation();
   const { data: sData } = useGetAllSemsterQuery([
     { name: "sort", value: "year" },
@@ -58,11 +44,6 @@ const SemesterRegister = () => {
       console.log(err);
     }
   };
-  //   const currentData = new Date().getFullYear();
-  //   const yearOption = [0, 1, 2, 3, 4].map((number) => ({
-  //     value: String(currentData + number),
-  //     label: String(currentData + number),
-  //   }));
 
   return (
     <div>
