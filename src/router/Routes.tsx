@@ -7,6 +7,8 @@ import Conract from "../pages/Conract";
 import { adminPaths } from "./admin.routes";
 import routeGenarator from "../utils/routeGenarator";
 import { facultyPaths } from "./faculty.routes";
+import { studentPaths } from "./student.routes";
+import ProtectorRoute from "../componets/layout/ProtectorRoute";
 
 const router = createBrowserRouter([
   {
@@ -21,13 +23,30 @@ const router = createBrowserRouter([
   { path: "/register", element: <Register></Register> },
   {
     path: "/admin",
-    element: <App></App>,
+    element: (
+      <ProtectorRoute role="admin">
+        <App></App>
+      </ProtectorRoute>
+    ),
     children: routeGenarator(adminPaths),
   },
   {
     path: "/faculty",
-    element: <App></App>,
+    element: (
+      <ProtectorRoute role="faculty">
+        <App></App>
+      </ProtectorRoute>
+    ),
     children: routeGenarator(facultyPaths),
+  },
+  {
+    path: "/student",
+    element: (
+      <ProtectorRoute role="student">
+        <App></App>
+      </ProtectorRoute>
+    ),
+    children: routeGenarator(studentPaths),
   },
 ]);
 

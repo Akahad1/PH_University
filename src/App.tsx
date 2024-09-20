@@ -4,7 +4,7 @@ import ProtectorRoute from "./componets/layout/ProtectorRoute";
 function App() {
   return (
     <>
-      <ProtectorRoute>
+      <ProtectorRoute role={undefined}>
         <MainLayout></MainLayout>
       </ProtectorRoute>
     </>

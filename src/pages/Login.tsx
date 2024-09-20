@@ -25,10 +25,14 @@ const Login = () => {
       console.log(userInfo);
       const res = await login(userInfo).unwrap();
       const user = veryfiyToken(res.data.accessToken) as TUser;
-      console.log(user);
+      console.log(res);
       dispatch(setUser({ user: user, token: res.data.accessToken }));
       toast.success("Log In successFully", { id: tostID, duration: 2000 });
-      navigate(`/${user.role}/dashBoard`);
+      if (res.data?.needsPasswordChange) {
+        navigate(`/change-password`);
+      } else {
+        navigate(`/${user.role}/dashBoard`);
+      }
     } catch (eror) {
       toast.error("somthig is rong", { id: tostID, duration: 2000 });
     }

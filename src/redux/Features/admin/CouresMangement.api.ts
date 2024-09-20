@@ -53,12 +53,42 @@ const coursesManagmentApi = baseApi.injectEndpoints({
       },
       providesTags: ["courses"],
     }),
+    getAllFaculties: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item: TQureyParam) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+
+        return {
+          url: "/faculties",
+          method: "GET",
+          params: params,
+        };
+      },
+      transformResponse: (response: TResponsRedux<any>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
 
     addSemsterRester: builder.mutation({
       query: (data) => ({
         url: "/semester-registrations/create-semester-registration",
         method: "POST",
         body: data,
+      }),
+      invalidatesTags: ["semster"],
+    }),
+    addFaculties: builder.mutation({
+      query: (args) => ({
+        url: `/courses/${args.courseId}/assign-faculties`,
+        method: "PUT",
+        body: args.data,
       }),
       invalidatesTags: ["semster"],
     }),
@@ -87,4 +117,6 @@ export const {
   useUpadeteSemsterResterMutation,
   useAddCouressMutation,
   useGetCoursesQuery,
+  useGetAllFacultiesQuery,
+  useAddFacultiesMutation,
 } = coursesManagmentApi;
